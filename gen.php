@@ -115,7 +115,13 @@ class ManifestGenerator {
 			// File -> add to files list
 			if ( is_file($item_path) ) {
 				
-				if ( substr($item_path,0,2) == './' ) $item_path = substr($item_path,2);
+				if ( substr($item_path,0,2) == './' ) {
+					$item_path = substr($item_path,2);
+					
+				} else {
+					$item_path = substr( $item_path, strlen($this->source_path) );
+					
+				}
 				
 				// Exclude manifest file.
 				if ( strpos($this->manifest_path,$item_path) !== false ) continue;
@@ -178,6 +184,7 @@ class ManifestGenerator {
 		
 		// Create the manifest content.
 		$cnt = "CACHE MANIFEST\r\n\r\n";
+		$cnt.= "CACHE:\r\n";
 		foreach ( $this->files as $file )  $cnt.= $file . "\r\n";
 		
 		// Save the manifest to the output file.
